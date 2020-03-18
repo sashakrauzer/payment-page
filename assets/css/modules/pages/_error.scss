@@ -1,0 +1,9 @@
+@mixin error {
+    @include success();
+
+    h2 {
+        &::before {
+            content: url(../img/error_icon.svg);
+        }
+    }
+}

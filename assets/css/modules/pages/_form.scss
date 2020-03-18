@@ -1,0 +1,230 @@
+@mixin form-wrap {
+    .sum-to-pay {
+        font-size: 40px;
+        line-height: 120%;
+
+        img {
+            height: 30px;
+        }
+    }
+
+    .shop-name,
+    .order-id {
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .order-id {
+        margin-top: 15px;
+        margin-bottom: 20px;
+
+        span {
+            font-weight: normal;
+        }
+    }
+
+    .safe-form {
+        position: absolute;
+        top: 100px;
+        right: 30px;
+        font-size: 14px;
+        line-height: 120%;
+        color: $gray;
+
+        &::before {
+            content: url(../img/locked.svg);
+            position: absolute;
+            left: - (8px + 32px);
+            height: 32px;
+            width: 32px;
+        }
+    }
+
+    #card_details {
+        .card-wrap {
+            position: relative;
+            height: 228px;
+            margin-bottom: 27px;
+
+            .card-front,
+            .card-back {
+                position: absolute;
+                top: 0;
+                width: 386px;
+                height: 100%;
+                border: 1px solid #E1E5E7;
+                border-radius: 12px;
+                box-sizing: border-box;
+                padding-top: 32px;
+            }
+
+            .card-front {
+                left: 0;
+                z-index: 1;
+                background: #F3F5F7;
+                padding: 32px 24px;
+
+                #PAN {
+                    margin-bottom: 40px;
+
+                    #payment-system-logo {
+                        background-size: contain;
+                        background-position: center;
+                    }
+                }
+
+                input[name="card_expired_month"] {
+                    width: 106px;
+                    border: 1px solid #E1E5E7;
+                }
+
+                .delimiter {
+                    display: inline-block;
+                    width: 24px;
+                    text-align: center;
+                    vertical-align: super;
+                    color: $gray;
+                }
+
+                input[name="card_expired_year"] {
+                    width: 106px;
+                    border: 1px solid #E1E5E7;
+                }
+
+                .wrap-bank-logo {
+                    width: 86px;
+                    height: 62px;
+                    margin-left: 16px;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                }
+            }
+
+            .card-back {
+                right: 0;
+                z-index: 0;
+                background: #E7E9EC;
+
+                .magnetic-stripe {
+                    height: 62px;
+                    background: #CFD1D4;
+                    margin-bottom: 40px;
+                }
+
+                .textfield {
+                    float: right;
+                    margin-right: 24px;
+                    width: 90px;
+                }
+
+                .hint {
+                    float: right;
+                    margin-right: 24px;
+                    margin-top: 6px;
+                    width: 90px;
+                    clear: both;
+                    font-size: 12px;
+                    color: $gray;
+                }
+            }
+        }
+
+        input[type="checkbox"] {
+            &:checked {
+                +label {
+                    &::before {
+                        content: '';
+                        border: none;
+                        background: url(../img/check.svg) no-repeat;
+                        background-size: contain;
+                    }
+                }
+            }
+        }
+
+        .checkbox {
+            margin-bottom: 24px;
+        }
+
+        label.email {
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        #email {
+            width: 284px;
+        }
+
+        #submit {
+            width: 224px;
+            margin-left: 16px;
+
+            .lds-ring {
+                display: none;
+            }
+
+            &.ripple-btn-wrap_loading {
+                span {
+                    display: none;
+                }
+
+                .lds-ring {
+                    display: flex;
+                }
+            }
+        }
+
+        button.submit {
+            width: 224px;
+            height: 62px;
+            border-radius: 6px;
+            background: #65B767;
+            border: none;
+            margin-left: 16px;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 0.15px;
+        }
+    }
+
+    p.other-ways {
+        margin-top: 24px;
+        margin-bottom: 12px;
+        font-weight: 500;
+    }
+
+    .wrap-buttons {
+        display: flex;
+
+        .btn {
+            position: relative;
+            width: 100%;
+            height: 62px;
+            border-radius: 6px;
+
+            img {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &.google-pay {
+                border: 0.5px solid #CFD5DA;
+                box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.04);
+            }
+
+            &.apple-pay {
+                margin-left: 16px;
+                background-color: black;
+
+            }
+
+            &.samsung-pay {
+                margin-left: 16px;
+                background-color: #034EA2;
+            }
+        }
+    }
+}

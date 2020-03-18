@@ -1,0 +1,401 @@
+let moon = require('./moon_algorithm.js');
+let card = require('./card');
+let showCardInfo = require('./show-card-info');
+
+let beautifyPAN = require('./beautify_card_number');
+
+let { 
+    formMain,
+    inputCardNumber,
+    inputCardExpiredMonth,
+    inputCardExpiredYear,
+    inputCardCvc,
+    inputSaveCard,
+    inputEmail,
+    inputCardIdp,
+    inputSubtotalP,
+    inputCustomerIdp,
+    inputPaymentSystem
+} = require('./vars');
+
+let patterns = {
+    email: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+}
+
+let validateClassNames = {
+    formValidClass: 'form-valid',
+    formInvalidClass: 'form-invalid',
+    inputInvalidClass: 'input-invalid',
+    inputRequiredClass: 'input-required',
+    inputErrorClass: 'input-error'
+}
+
+
+
+function dateCheck(month, year, errorClass) {
+    let date = new Date();
+    let currentMonth = date.getMonth() + 1;
+    let currentYear = date.getFullYear().toString().slice(2);
+    if (currentYear > +year.value) {
+        year.classList.add(errorClass);
+        // month.classList.add(errorClass);
+        return false;
+    } 
+    if (currentYear.toString() === year.value) {
+        if (currentMonth > +month.value) {
+            // year.classList.add(errorClass);
+            month.classList.add(errorClass);
+            return false;
+        }
+    }
+    return true;
+}
+
+// Выводит проверку полей в отдельную функцию, которую будем вызывать в событиях
+function inputCheck(elem, errorClass) {
+    if (elem.disabled) {
+        return true;
+    }
+    if (elem.dataset.hasOwnProperty('required') && !elem.value) {
+        // elem.classList.add(config.inputRequiredClass);
+        elem.classList.add(errorClass);
+        return false;
+    } 
+    if (elem.dataset.hasOwnProperty('validator')) {
+        let reg, min, max, pattern;
+        switch(elem.dataset.validator) {
+            case 'regexp':
+                // pattern = new RegExp(elem.dataset.validatorPattern);
+                pattern = new RegExp(patterns[elem.dataset.validatorPattern]);
+                if (!elem.value.length || pattern.test(elem.value)) {
+                    return true;
+                } else {
+                    elem.classList.add(errorClass);
+                    return false;
+                }
+            case 'function':
+                if (elem.dataset.validatorFunc === 'moon') {
+                    let newValue = elem.value.split(' ').join('');
+                    if(moon(newValue)) {
+                        // good
+                        return true;
+                    } else {
+                        elem.classList.add(errorClass);
+                        return false;
+                    }
+                }
+                break;
+            case 'date':
+                if (elem.dataset.validatorType === 'month') {
+                    if (elem.value.length < 2 || elem.value.length > 2) {
+                        elem.classList.add(errorClass);
+                        return false;
+                    } else if (+elem.value > 12) {
+                        elem.classList.add(errorClass);
+                        return false;
+                    }
+                    return true;
+                } else if (elem.dataset.validatorType === 'year') {
+                    if (elem.value.length < 2 || elem.value.length > 2) {
+                        elem.classList.add(errorClass);
+                        return false;
+                    } else if (+elem.value > 99) {
+                        elem.classList.add(errorClass);
+                        return false;
+                    }
+                    return true;
+                }
+                break;
+            case 'cvc':
+                if (elem.value.length < 3 || elem.value.length > 4) {
+                    elem.classList.add(errorClass);
+                    return false;
+                }
+                return true;
+        }
+    }
+
+    return true;
+
+
+    // if (elem.dataset.hasOwnProperty('validator')) {
+    //     let reg, min, max, pattern;
+    //     switch(elem.dataset.validator) {
+    //         case 'letters':
+    //             reg = /^[a-zа-яё]+$/i;
+    //             if (!elem.value.length || reg.test(elem.value)) {
+    //                 // good
+    //             } else {
+    //                 elem.classList.add(config.inputErrorClass);
+    //                 return false;
+    //             }
+    //             break;
+    //         case 'number':
+    //             reg = /^-?[0-9]+$/;
+    //             if (!elem.value.length || reg.test(elem.value)) {
+    //                 // good
+    //                 // Дополнительно проверяем, входит ли введеное число в заданный диапазон
+    //                 if (elem.dataset.validatorMin || elem.dataset.validatorMax) {
+    //                     min = elem.dataset.validatorMin ? elem.dataset.validatorMin : null;
+    //                     max = elem.dataset.validatorMax ? elem.dataset.validatorMax : null;
+    //                     if (+elem.value < +min || +elem.value > +max) {
+    //                         elem.classList.add(config.inputErrorClass);
+    //                         return false;
+    //                     }
+    //                     // good
+    //                 }
+    //             } else {
+    //                 elem.classList.add(config.inputErrorClass);
+    //                 return false;
+    //             }
+    //             break;
+    //         case 'regexp':
+    //             pattern = new RegExp(elem.dataset.validatorPattern);
+    //             if (!elem.value.length || pattern.test(elem.value)) {
+    //                 // good
+    //             } else {
+    //                 elem.classList.add(config.inputErrorClass);
+    //                 return false;
+    //             }
+    //             break;
+    //         case 'function':
+    //             if (elem.dataset.validatorFunc === 'moon') {
+    //                 if(moon(elem.value)) {
+    //                     // good
+    //                 } else {
+    //                     elem.classList.add(config.inputErrorClass);
+    //                     return false;
+    //                 }
+    //             }
+    //     }
+    //     return true;
+    // }
+}
+
+function validateForm() {
+    // let form = document.getElementById(config.formId);
+    let inputs = document.querySelectorAll('input');
+    inputs = Array.from(inputs);
+
+    formMain.addEventListener('blur', function(event) {
+        let elem = event.target;
+        // let parent = elem.parentElement;
+        // if (elem.tagName === 'INPUT' && elem.)
+        if (elem.tagName === 'INPUT') {
+            // setTimeout(() => {
+            //     parent.classList.remove('textfield_focus');
+            // });
+            
+            if (!inputCheck(elem, validateClassNames.inputErrorClass)) {
+                // good
+            } else {
+                // bad
+            }
+        }
+    }, true);
+
+    formMain.addEventListener('focus', function(event) {
+        let elem = event.target;
+        // let parent = elem.parentElement;
+        // if (elem.dataset.validator === 'date') {
+        //     Array.from(
+        //         form.querySelectorAll('[data-validator="date"]')
+        //     ).forEach((elem) => {
+        //         elem.classList.remove(config.inputErrorClass);
+        //     });
+        // }
+        // else 
+        if (elem.tagName === 'INPUT') {
+            elem.classList.remove(validateClassNames.inputErrorClass);
+            // parent.classList.add('textfield_focus');
+        }
+    }, true);
+
+    formMain.addEventListener('change', function(event) {
+        let elem = event.target;
+        if (elem.tagName === 'INPUT') {
+            console.log('CHANGE', elem);
+        }
+    });
+
+    formMain.addEventListener('keydown', function(event) {
+        let elem = event.target;
+        console.log('KeyDOWN', event);
+
+        if (elem.dataset.type === 'number') {
+
+            if (event.key === 'Backspace' && elem.classList.contains('input-mask')) {
+                elem.value = '';
+                elem.classList.remove('input-mask');
+
+                // Удаление карты
+                let input = this.parentElement.parentElement.querySelector('input');
+
+                // let hiddenInput = document.querySelector('[name="card_idp"]');
+                inputCardIdp.value = '';
+
+                // let month = document.querySelector('[name="card_expired_month"]');
+                // let year = document.querySelector('[name="card_expired_year"]');
+                inputCardExpiredMonth.disabled = false;
+                inputCardExpiredYear.disabled = false;
+
+                // let mask = this.querySelector('.mask');
+                // input.value = mask.textContent;
+                // input.classList.add('input-mask');
+                // setTimeout(() => {
+                //     input.focus();
+                // }, 0);
+                showCardInfo('000000');
+
+
+                return;
+            }
+
+            if (event.key === 'Backspace') {
+                return;
+            }
+    
+            if (!~event.code.indexOf('Digit') && !~event.code.indexOf('Key')) {
+                removeKey(elem);
+                return;
+            }
+
+            // Любые другие символы, кроме цифр, затираем после ввода
+            if (!event.key.replace(/[^0-9]/, '')) {
+                console.log('KeyDOWN', event);
+                removeKey(elem);
+                return;
+            } 
+            else if (elem.dataset.hasOwnProperty('cardBeautify')) {
+                
+                console.log('BEAUTIFY', elem.value, event.key, beautifyPAN(elem.value + event.key));
+                let newValue = beautifyPAN(elem.value + event.key);
+                // elem.value = beautifyPAN(elem.value + event.key);
+                // event.preventDefault();
+                setTimeout(() => {
+                    elem.value = newValue;
+                }, 0);
+                return;
+            }
+
+            function removeKey(elem) {
+                let oldValue = elem.value;
+                
+                setTimeout(() => {
+                    elem.value = oldValue;
+                }, 0);
+            }
+        }
+    });
+
+    // form.addEventListener('keyup', function(event) {
+    //     console.log('KeyUP', event);
+    //     event.preventDefault();
+    // });
+
+    // form.addEventListener('input', function(event) {
+    //     let elem = event.target;
+    //     console.log('input', event, elem.value);
+    //     if (event.data === '2') {
+    //         elem.value = elem.value.slice(0, elem.value.length - 1);
+    //     }
+    //     // return;
+    //     // event.preventDefault();
+    // });
+
+    formMain.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let results = inputs.map(function(input) {
+            return inputCheck(input, validateClassNames.inputErrorClass);
+        });
+
+        // Проверка даты
+        if (!inputCardExpiredMonth.disabled && !inputCardExpiredYear.disabled) {
+            results.push(dateCheck(inputCardExpiredMonth, inputCardExpiredYear, validateClassNames.inputErrorClass));
+        }
+        
+
+        if (results.includes(false)) {
+            // formMain.classList.add(validateClassNames.formInvalidClass);
+            // formMain.classList.remove(validateClassNames.formValidClass);
+        } else {
+            // formMain.classList.remove(validateClassNames.formInvalidClass);
+            // formMain.classList.add(validateClassNames.formValidClass);
+
+            let btnSubmit = document.getElementById('submit');
+            btnSubmit.classList.add('ripple-btn-wrap_loading')
+            // Good, sent Data
+            // Номер карты — 4000000000002479
+            //  Срок действия — 01/20
+            //  Имя Держателя карты — UNITELLER TEST
+            //  CVV2— 123
+            //  Электронная почта — любое значение
+            //  Номер телефона — любое значение 
+            let cardNumber = inputCardNumber.value;
+            let subtotal_p = inputSubtotalP.value;
+            let cardExpiredMonth = inputCardExpiredMonth.value;
+            let saveCard = inputSaveCard.value;
+            let customer_idp = inputCustomerIdp.value;
+            let cardType = inputPaymentSystem.value;
+
+            inputs.forEach((input) => {
+                input.disabled = true;
+            });
+            // Эмуляция отправки формы
+            let toPay = new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Сверяем номер карты с картой для неуспешной оплаты
+                    if (cardNumber.split(' ').join('') === '4000000000002479') {
+                        reject('error PAN');
+                    } else {
+                        // Если выбрали сохранить карту
+                        if (saveCard && customer_idp) {
+                            // Условный айди зарегистрированной карты. В моем случае будет один для любой карты.
+                            card.regCard(customer_idp, cardNumber, cardType);
+
+                            // let customerCards = localStorage[customer_idp];
+                            // if (customerCards) {
+                            //     let mask = getMaskFromPAN(cardNumber.split(' ').join(''));
+                            //     localStorage[customer_idp] += mask + ' ' + cardType + ' ' + card_IDP + '; ';
+                            //     // 
+                            // } else {
+                            //     let mask = getMaskFromPAN(cardNumber.split(' ').join(''));
+                            //     localStorage[customer_idp] = mask + ' ' + cardType + ' ' + card_IDP + '; ';
+                            //     // console.log('MASK', mask);
+                                
+                            // }
+                            console.log('Сохраняем карту');
+                            // let newCard 
+                            // localStorage[customer_idp] = 
+                        }
+                        
+                        // Данные валидны, отвечаем успехом
+                        resolve('success');
+                    }
+                }, 5000);
+            });
+
+            toPay.
+                then((data) => {
+                    console.log('Resolve', data);
+                    let date = new Date();
+                    let successDateDate = document.querySelector('.success__date span:first-child');
+                    successDateDate.textContent = date.toLocaleDateString();
+                    let successDateTime = document.querySelector('.success__date span:last-child');
+                    successDateTime.textContent = date.toLocaleTimeString();
+                    let successSubtotalP = document.querySelector('.success__subtotal-p span');
+                    successSubtotalP.textContent = subtotal_p;
+                    let successCardMask = document.querySelector('.success__card-mask span');
+                    successCardMask.textContent = cardNumber;
+                    document.body.classList.add('success');
+                }).
+                catch((error) => {
+                    console.log('Reject', error);
+                    document.body.classList.add('error');
+                })
+        }
+    });
+}
+
+module.exports = validateForm;

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+html(lang="ru")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Google+Sans:100,300,400,500,700,900,100i,300i,400i,500i,700i,900i")
+        link(rel="stylesheet", href="./css/main.css")
+        title Форма оплаты
+    body
+        aside 
+            .container
+                a(href="#", class="ad", target="_blank")
+        main
+            .container
+                div
+                    .logos-wrap
+                        img.logo-uniteller(src="img/logo_uniteller.svg", alt="логотип Uniteller")
+                        ul.supported-systems
+                            li.mir
+                                img(src="img/logo_mir.svg", alt="логотип МИР")
+                            li.visa
+                                img(src="img/logo_visa.svg", alt="логотип VISA")
+                            li.maestro
+                                img(src="img/logo_maestro.svg", alt="логотип Maestro")
+                            li.master-card
+                                img(src="img/logo_masterc.svg", alt="логотип Master Card")
+                    #form-wrap
+                        .sum-to-pay Оплата: <span id="subtotal_p">404,00</span> <img src="img/Rouble_official_sign.svg", alt="Символ рубля">
+                        .shop-name Магазин: <span id="shop_idp">Социальная карта</span>
+                        .order-id Номер заказа: <span id="order_idp">6378209463</span>
+                        .safe-form Безопасная <br>форма оплаты
+                        form#card_details.form-ui
+                            .card-wrap
+                                .card-front#card-front
+                                    .textfield#PAN
+                                        input(type="text", name="card_number", data-required, data-type="number", data-card-beautify, data-validator="function", data-validator-func="moon", autocomplete="off")
+                                        label(for="") Номер карты
+                                        //- span.textfield__clean
+                                        span.textfield__error-required Введите номер карты
+                                        span.textfield__error-invalid Введите 16ти значный номер карты
+                                        span.textfield__img#payment-system-logo
+                                        ul.textfield__saved-cards
+                                    //- input(type="text", name="card_number", placeholder="Номер карты", data-required, data-validator="function", data-validator-func="moon" autocomplete="off")
+                                    //- input(type="text", name="card_expired_month", placeholder="Месяц", data-required, autocomplete="off")
+                                    .flex-container
+                                        .textfield.textfield_inline-block
+                                            input(type="text", data-type="number", name="card_expired_month", data-required, autocomplete="off", data-validator="date", data-validator-type="month")
+                                            label(for="") Месяц
+                                            //- span.textfield__clean
+                                            //- span.textfield__error Введите номер карты
+                                            //- span.textfield__hint Введите 10ти значный номер карты
+                                        span.delimiter /
+                                        .textfield.textfield_inline-block
+                                            input(type="text", data-type="number", name="card_expired_year", data-required, autocomplete="off", data-validator="date", data-validator-type="year")
+                                            label(for="") Год
+                                            //- span.textfield__clean
+                                        //- input(type="text", name="card_expired_year", placeholder="Год", data-required, autocomplete="off")
+                                        .wrap-bank-logo#bank-logo
+                                .card-back
+                                    .magnetic-stripe
+                                    .textfield
+                                        input(type="password", data-type="number", name="card_cvc", data-required, autocomplete="off", data-validator="cvc")
+                                        label(for="") CVC
+                                    //- input(type="text", name="card_cvc", placeholder="CVC", data-required, autocomplete="off")
+                                    span.hint(data-hint="Три или четыре последние цифры на обратной стороне карты.") Что это?
+                            .checkbox
+                                input(type="checkbox", name="save_card", id="save_card")
+                                label(for="save_card") Запомнить карту
+                            label.email(for="email") Отправить чек на Email
+                            .flex-container
+                                .textfield.textfield_inline-block#email
+                                    input(type="text", data-type="email", name="email", data-required, autocomplete="off", data-validator="regexp", data-validator-pattern="email")
+                                    label(for="") Email
+                                //- input(type="email", id="email", name="email", data-required, autocomplete="off")
+                                .ripple-btn-wrap#submit
+                                    button.ripple-btn(ripple) 
+                                        span Отправить
+                                        .lds-ring
+                                            div
+                                            div
+                                            div
+                                            div
+                                //- button.submit Оплатить
+                            input(type="hidden", name="card_idp")
+                            input(type="hidden", name="subtotal_p")
+                            input(type="hidden", name="customer_idp")
+                            input(type="hidden", name="payment_system")
+                            input(type="hidden", name="order_idp")
+                        p.other-ways Другие способы оплаты
+                        .wrap-buttons
+                            a.btn.google-pay(href="#", class="google-pay")
+                                img(src="img/google_pay.svg", alt="логотип Google Pay")
+                            a.btn.apple-pay(href="#", class="apple-pay")
+                                img(src="img/apple_pay.svg", alt="логотип Apple Pay")
+                            a.btn.samsung-pay(href="#", class="samsung-pay")
+                                img(src="img/samsung_pay.svg", alt="логотип Samsung Pay")
+                    #success
+                        h2 Платёж <br>успешно совершён
+                        p Подробная информация о Вашем платеже отправлена на электронный адрес, указанный во время платежа.
+                        .ripple-btn-wrap
+                            a(href="#", class="ripple-btn anchor-like-button", ripple) Вернуться в магазин
+                        hr
+                        table
+                            tr
+                                td Дата и время платежа:
+                                td.success__date <span>01.12.2019</span> <span>11:13:37</span>
+                            tr
+                                td Получатель платежа:
+                                td МКУ «Организатор городского парковочного пространства» parkingkzn.ru
+                            tr
+                                td Номер платежа:
+                                td 474426
+                            tr
+                                td Сумма:
+                                td.success__subtotal-p <span>404.00</span> RUB
+                            tr
+                                td Банковская карта:
+                                td.success__card-mask <span>434412******1044</span>
+                            tr
+                                td Код авторизации:
+                                td 4534544
+                        .print-wrap
+                            a(href="#").print Распечатать
+                    #error
+                        h2 Ошибка
+                        p Пожалуйста, проверьте правильность введенной информации по Вашей банковской карте и попробуйте еще&nbsp;раз. <br><br>Просим Вас повторно ввести поля: Номер карты, Срок&nbsp;действия, Код CVC2 или CVV2, Имя держателя карты. Мы не сохраняем их в целях Вашей безопасности.
+                        .ripple-btn-wrap
+                            a(href="#", class="ripple-btn anchor-like-button", ripple) Повторить
+                div
+                    ul.wrap-secure-logos
+                        li.visa
+                            img(src="img/secure-visa.svg", alt="Verified by VISA")
+                        li.masterc
+                            img(src="img/secure-masterc.svg", alt="Mastercard SecureCode")
+                        li.pcidss
+                            img(src="img/secure-pcidss.svg", alt="PCI DSS Certified")
+                        li.mir
+                            img(src="img/secure-mir.svg", alt="MIR Accept")
+                    div В системе Uniteller безопасность платежей и конфиденциальность введенной Вами информации обеспечивается использованием протокола TLS и другими специальными средствами. Ваша конфиденциальная информация хранится исключительно нами и ни при каких обстоятельствах не будет предоставлена третьим лицам за исключением случаев, предусмотренных законодательством.
+                    div В случае возникновения вопросов Вы можете обратиться в Службу поддержки компании Uniteller по телефону 8 800 707-67-19 или электронной почте support@uniteller.ru
+        //- form.form-ui
+        //-     //- input float label
+            
+        //-     .textfield.dropdown
+        //-         input(type="text")
+        //-         label(for="") Месяц
+        //-         span.dropdown__caret
+        //-         ul.dropdown__menu
+        //-             li(data-value="Январь") Январь
+        //-             li(data-value="Февраль") Февраль
+        //-             li(data-value="Март") Март
+        //-             li(data-value="Апрель") Апрель
+        //-     .textfield
+        //-         input(type="text")
+        //-         label(for="") Input float
+        //-         span.textfield__clean
+        //-         span.textfield__error Введите номер карты
+        //-         span.textfield__hint Введите 10ти значный номер карты
+        //-     .textfield
+        //-         input(type="text")
+        //-         label(for="") Input default
+        script(src="js/script.js")

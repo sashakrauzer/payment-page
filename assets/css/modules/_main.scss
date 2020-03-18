@@ -1,0 +1,144 @@
+body {
+    #error {
+        display: none;
+    }
+
+    #success {
+        display: none;
+    }
+
+    &.success {
+        main {
+            #form-wrap {
+                display: none;
+            }
+
+            #error {
+                display: none;
+            }
+
+            #success {
+                display: block;
+            }
+        }
+    }
+
+    &.error {
+        main {
+            #form-wrap {
+                display: none;
+            }
+
+            #error {
+                display: block;
+            }
+
+            #success {
+                display: none;
+            }
+        }
+    }
+}
+
+
+aside {
+    .ad {
+        display: block;
+        height: 200px;
+        background: url(../img/ad-ak-bars.png) no-repeat;
+        background-size: contain;
+        margin-bottom: 30px;
+    }
+}
+
+main {
+    margin-bottom: 144px;
+
+    .container {
+        display: flex;
+
+        &>div {
+            &:first-child {
+                width: 584px;
+
+                .logos-wrap {
+                    margin-bottom: 30px;
+
+                    .logo-uniteller {
+                        width: 93px;
+                    }
+
+                    .supported-systems {
+                        float: right;
+                        margin: 0;
+                        padding: 11px 0 0;
+                        list-style-type: none;
+
+                        li {
+                            display: inline-block;
+
+                            img {
+                                vertical-align: top;
+                            }
+                        }
+                    }
+                }
+
+                @mixin wrap {
+                    border: 1px solid #E1E5E7;
+                    border-radius: 6px;
+                    padding: 30px;
+                    box-sizing: border-box;
+                    position: relative;
+                }
+
+                #form-wrap {
+                    @include wrap();
+                    @include form-wrap();
+                }
+
+                #success {
+                    @include wrap();
+                    @include success();
+                }
+
+                #error {
+                    @include wrap();
+                    @include error();
+                }
+            }
+
+            &:last-child {
+                width: 264px;
+                padding-left: 30px;
+                box-sizing: border-box;
+
+                .wrap-secure-logos {
+                    padding: 337px 30px 0 0;
+                    margin: 0;
+                    list-style-type: none;
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    li {
+                        &:nth-child(even) {
+                            img {
+                                margin-left: 10px;
+                            }
+                        }
+
+                        img {
+                            width: 80px;
+
+                        }
+                    }
+                }
+
+                div {
+                    font-size: 12px;
+                    color: $gray;
+                }
+            }
+        }
+    }
+}
