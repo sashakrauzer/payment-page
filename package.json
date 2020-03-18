@@ -6,11 +6,15 @@
   "scripts": {
     "build:html": "pug assets -o dist",
     "build:css": "node-sass assets/css/main.scss -o dist/css/ --output-style compressed",
-    "build:js": "mkdirp dist/js && browserify assets/js/main.js > dist/js/script.js",
-    "build": "mkdirp dist && npm-run-all -p build:**",
+    "build:js": "mkdirp dist/js && browserify assets/js/main.js -t [ envify --NODE_ENV production ] > dist/js/script.js",
+    "build:img": "mkdirp dist/img && ncp assets/img/ dist/img",
+    "prebuild": "rimraf dist/*",
+    "build": "mkdirp dist && npm-run-all -p build:*",
     "watch:html": "pug assets -o dev -w -P",
     "watch:css": "node-sass assets/css/main.scss -o dev/css/ --source-map true && node-sass assets/css/main.scss -o dev/css/ -wr --source-map true",
-    "watch:js": "mkdirp dev/js && watchify --debug assets/js/main.js -o dev/js/script.js",
+    "watch:js": "mkdirp dev/js && watchify --debug assets/js/main.js -t [ envify --NODE_ENV development ] -o dev/js/script.js",
+    "watch:img": "mkdirp dev/img && ncp assets/img/ dev/img",
+    "predev": "rimraf dev/*",
     "dev": "mkdirp dev && npm-run-all -p server watch:*",
     "server": "browser-sync start --server dev/ --files dev/",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,11 +24,14 @@
   "dependencies": {
     "browser-sync": "^2.26.7",
     "browserify": "^16.5.0",
+    "envify": "^4.1.0",
     "mkdirp": "^1.0.3",
+    "ncp": "^2.0.0",
     "node-sass": "^4.13.1",
     "npm-run-all": "^4.1.5",
     "pug": "^2.0.4",
     "pug-cli": "^1.0.0-alpha6",
+    "rimraf": "^3.0.2",
     "watchify": "^3.11.1"
   }
 }
