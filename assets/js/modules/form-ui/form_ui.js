@@ -1,34 +1,9 @@
 require('./ripple_btn');
 
 let formUi = document.querySelector('.form-ui');
-let labelsOfDropdowns = Array.from(
-    document.querySelectorAll('.dropdown label')
-);
 let dropdowns = Array.from(
     document.querySelectorAll('.dropdown')
 );
-
-let listOfMenu = Array.from(
-    document.querySelectorAll('.dropdown .dropdown__menu')
-);
-let inputs = Array.from(
-    document.querySelectorAll('.textfield input')
-);
-
-inputs.forEach((input) => {
-    input.addEventListener('change', function(event) {
-        // console.log('INPUT change');
-    });
-});
-
-// labelsOfDropdowns.forEach((label) => {
-//     label.addEventListener('mouseover', function(event) {
-//         this.parentElement.classList.add('dropdown_hover');
-//     });
-//     label.addEventListener('mouseout', function(event) {
-//         this.parentElement.classList.remove('dropdown_hover');
-//     });
-// });
 
 dropdowns.forEach((dropdown) => {
     dropdown.addEventListener('mouseover', function(event) {
@@ -42,7 +17,6 @@ dropdowns.forEach((dropdown) => {
 formUi.addEventListener('click', function(event) {
     let elem = event.target;
     let parent = elem.parentElement;
-    // console.log(parent);
     if (elem.tagName === 'LABEL') {
         if (parent.classList.contains('dropdown')) {
             parent.classList.toggle('dropdown_is-open');
@@ -62,10 +36,7 @@ formUi.addEventListener('click', function(event) {
             dropdown.classList.remove('dropdown_is-open');
         }
     }
-    // else if (elem.tagName === 'LABEL' && parent.classList.contains('textfield') && parent.classList.contains('dropdown')) {
-    //     parent.classList.toggle('dropdown_is-open');
-    // }
-    else if (elem.classList.contains('textfield__clean')) {
+    else if (elem.classList.contains('textfield__clean') && !parent.querySelector('input').disabled) {
         parent.querySelector('input').value = '';
         parent.classList.remove('textfield_not-empty');
     } else if (elem.classList.contains('dropdown__btn')) {

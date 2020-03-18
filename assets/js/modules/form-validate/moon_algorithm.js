@@ -15,10 +15,8 @@ function moon(card_number) {
           arr.push(n)
         }
     }
-    //console.log(arr);
     var summ = arr.reduce(function(a, b) { return a + b; });
     return Boolean(!(summ % 10));
-  
 }
 
 module.exports = moon;

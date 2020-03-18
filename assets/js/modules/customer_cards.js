@@ -5,40 +5,37 @@ let {
     inputCardExpiredMonth, 
     inputCardExpiredYear, 
     inputCardIdp,
-    inputSaveCard
+    inputSaveCard,
+    inputCardCvc
 } = require('./vars');
 
-function getCards(customer_idp) {
-    return localStorage[customer_idp];
-}
+// function getCards(customer_idp) {
+//     return localStorage[customer_idp];
+// }
 
+// Регистрируем новую карту
 function regCard(customer_idp, card_number, card_type) {
-    let card_IDP = '';
+    let card_IDP;
 
+    // Функция для создания маски из номера карты
     function getMaskFromPAN(PAN) {
         let length = PAN.length;
         let firstPart = PAN.slice(0, 6);
         let endPart = PAN.slice(-4);
         card_IDP = (+firstPart + +endPart).toString().slice(0, 4);
-        // console.log('CARD_IDP', card_IDP);
         let mask = firstPart + '*'.repeat(length - firstPart.length - endPart.length) + endPart;
         return mask;
     }
 
-    
-
     let customerCards = localStorage[customer_idp];
+    // Проверяем наличие уже зарегистрированных карта на данного покупателя
     if (customerCards) {
         let mask = getMaskFromPAN(card_number.split(' ').join(''));
         localStorage[customer_idp] += '; ' + mask + ' ' + card_type + ' ' + card_IDP;
-        // 
     } else {
         let mask = getMaskFromPAN(card_number.split(' ').join(''));
         localStorage[customer_idp] = mask + ' ' + card_type + ' ' + card_IDP;
-        // console.log('MASK', mask);
     }
-    // console.log('REG CARD');
-    // 
 }
 
 function removeCard(card_IDP, customer_idp) {
@@ -59,8 +56,7 @@ function loadCards(customer_idp, elem) {
         cardList = cardList.filter((value, index, self) => { 
             return self.indexOf(value) === index;
         })
-        // console.log('CARdLIST', cardList);
-        // let cardObj = {};
+
         cardList.forEach((card) => {
             let arrFromString = card.split(' ');
             let li = document.createElement('li');
@@ -69,11 +65,14 @@ function loadCards(customer_idp, elem) {
             let unregCard = document.createElement('div');
             li.id = arrFromString[2];
 
-            // li.addEventListener('mousedown', console.log);
             li.addEventListener('mousedown', function() {
                 let input = this.parentElement.parentElement.querySelector('input');
 
                 inputCardIdp.value = arrFromString[2];
+                inputCardExpiredMonth.value = '';
+                inputCardExpiredMonth.focus();
+                inputCardExpiredYear.value = '';
+                inputCardExpiredYear.focus();
                 inputCardExpiredMonth.disabled = true;
                 inputCardExpiredYear.disabled = true;
                 inputCardExpiredMonth.classList.forEach((className) => {
@@ -89,6 +88,7 @@ function loadCards(customer_idp, elem) {
                 input.classList.add('input-mask');
                 setTimeout(() => {
                     input.focus();
+                    inputCardCvc.focus();
                 }, 0);
                 showCardInfo(arrFromString[0].slice(0,6));
             });
@@ -114,32 +114,11 @@ function loadCards(customer_idp, elem) {
             li.appendChild(cardType);
             li.appendChild(unregCard);
             elem.appendChild(li);
-            
         });
-
-        // console.log('LOAD CARDS');
     }
 }
 
-// function liClickHandle(event) {
-//     let input = this.parentElement.parentElement.querySelector('input');
-//     let hiddenInput = document.querySelector('[name="card_idp"]');
-//     let mask = this.querySelector('.mask');
-//     input.value = mask.textContent;
-//     input.classList.add('input-mask');
-//     input.focus();
-// }
-
-// function selectRegCard() {
-
-// }
-
-// function unSelectCard() {
-
-// }
-
 module.exports = {
-    getCards,
     regCard,
     loadCards
 }

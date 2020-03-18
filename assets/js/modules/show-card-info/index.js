@@ -7,23 +7,19 @@ let elemFrontCard = document.querySelector('#card-front');
 
 let config = {
     PAN: null,
-    paymentSystemLogo,
-    bankLogo,
-    elemFrontCard,
-    addToPath: '../img/'
+    paymentSystemLogo, // Элемент для отображения иконки платежной системы
+    bankLogo, // Элемент для отображения логотипа банка карты
+    elemFrontCard, // Лицевая сторона карты, для смены бэкграунда
+    addToPath: 'img/'
 }
 
 function showCardInfo(PAN) {
-    
+    // Используем две вспомогательные функции getPaymentSystem и getBankInfo 
+    // для получения нужных данных и стилизуем форму
     config.PAN = PAN;
 
     let paymentSystem = {};
     let bankInfo = {};
-
-    // let result = {
-    //     paymentSystem: null,
-    //     bankInfo: null,
-    // }
 
     paymentSystem = getPaymentSystem(config.PAN);
     if (paymentSystem.type) {
@@ -40,15 +36,7 @@ function showCardInfo(PAN) {
         config.bankLogo.style.backgroundImage = '';
         config.elemFrontCard.style.backgroundColor = '';
     }
-    // if (config.PAN && config.PAN.toString().length === 6) {
-    //     console.log('Bank Info', getBankInfo(config.PAN), config.PAN);
-        
-        
-    // }
 
-    
-
-    // console.log('SHOWCARD');
 }
 
 module.exports = showCardInfo;

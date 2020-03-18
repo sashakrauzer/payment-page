@@ -111,10 +111,14 @@ main {
             &:last-child {
                 width: 264px;
                 padding-left: 30px;
+                padding-bottom: 60px;
                 box-sizing: border-box;
-
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                
                 .wrap-secure-logos {
-                    padding: 337px 30px 0 0;
+                    padding: 0 30px 0 0;
                     margin: 0;
                     list-style-type: none;
                     display: flex;

@@ -12,6 +12,10 @@
     .order-id {
         margin-top: 20px;
         font-weight: bold;
+        span {
+            font-weight: normal;
+            color: $gray;
+        }
     }
 
     .order-id {
@@ -149,6 +153,7 @@
         label.email {
             display: block;
             margin-bottom: 12px;
+            font-weight: bold;
         }
 
         #email {

@@ -26,6 +26,12 @@
         color: $black;
         font-family: 'Google Sans', sans-serif;
 
+        &:disabled {
+            ~ .textfield__clean {
+                display: none !important;
+            }
+        }
+
         &.input-error {
             border: 1px solid $red !important;
 
@@ -155,7 +161,7 @@
         left: 0;
         top: 125%;
         z-index: 1;
-
+        box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.08);
         &::before {
             content: '';
             width: 12px;
@@ -318,7 +324,7 @@
         padding-left: 36px;
         margin-bottom: 24px;
         cursor: pointer;
-
+        font-weight: 500;
         &::before {
             content: '';
             position: absolute;
