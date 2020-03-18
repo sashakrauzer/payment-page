@@ -35,33 +35,25 @@ html(lang="ru")
                                     .textfield#PAN
                                         input(type="text", name="card_number", data-required, data-type="number", data-card-beautify, data-validator="function", data-validator-func="moon", autocomplete="off")
                                         label(for="") Номер карты
-                                        //- span.textfield__clean
                                         span.textfield__error-required Введите номер карты
                                         span.textfield__error-invalid Введите 16ти значный номер карты
                                         span.textfield__img#payment-system-logo
+                                        //- span.textfield__clean
                                         ul.textfield__saved-cards
-                                    //- input(type="text", name="card_number", placeholder="Номер карты", data-required, data-validator="function", data-validator-func="moon" autocomplete="off")
-                                    //- input(type="text", name="card_expired_month", placeholder="Месяц", data-required, autocomplete="off")
                                     .flex-container
                                         .textfield.textfield_inline-block
                                             input(type="text", data-type="number", name="card_expired_month", data-required, autocomplete="off", data-validator="date", data-validator-type="month")
                                             label(for="") Месяц
-                                            //- span.textfield__clean
-                                            //- span.textfield__error Введите номер карты
-                                            //- span.textfield__hint Введите 10ти значный номер карты
                                         span.delimiter /
                                         .textfield.textfield_inline-block
                                             input(type="text", data-type="number", name="card_expired_year", data-required, autocomplete="off", data-validator="date", data-validator-type="year")
                                             label(for="") Год
-                                            //- span.textfield__clean
-                                        //- input(type="text", name="card_expired_year", placeholder="Год", data-required, autocomplete="off")
                                         .wrap-bank-logo#bank-logo
                                 .card-back
                                     .magnetic-stripe
                                     .textfield
                                         input(type="password", data-type="number", name="card_cvc", data-required, autocomplete="off", data-validator="cvc")
                                         label(for="") CVC
-                                    //- input(type="text", name="card_cvc", placeholder="CVC", data-required, autocomplete="off")
                                     span.hint(data-hint="Три или четыре последние цифры на обратной стороне карты.") Что это?
                             .checkbox
                                 input(type="checkbox", name="save_card", id="save_card")
@@ -71,7 +63,6 @@ html(lang="ru")
                                 .textfield.textfield_inline-block#email
                                     input(type="text", data-type="email", name="email", data-required, autocomplete="off", data-validator="regexp", data-validator-pattern="email")
                                     label(for="") Email
-                                //- input(type="email", id="email", name="email", data-required, autocomplete="off")
                                 .ripple-btn-wrap#submit
                                     button.ripple-btn(ripple) 
                                         span Отправить
@@ -80,7 +71,6 @@ html(lang="ru")
                                             div
                                             div
                                             div
-                                //- button.submit Оплатить
                             input(type="hidden", name="card_idp")
                             input(type="hidden", name="subtotal_p")
                             input(type="hidden", name="customer_idp")
@@ -138,25 +128,4 @@ html(lang="ru")
                             img(src="img/secure-mir.svg", alt="MIR Accept")
                     div В системе Uniteller безопасность платежей и конфиденциальность введенной Вами информации обеспечивается использованием протокола TLS и другими специальными средствами. Ваша конфиденциальная информация хранится исключительно нами и ни при каких обстоятельствах не будет предоставлена третьим лицам за исключением случаев, предусмотренных законодательством.
                     div В случае возникновения вопросов Вы можете обратиться в Службу поддержки компании Uniteller по телефону 8 800 707-67-19 или электронной почте support@uniteller.ru
-        //- form.form-ui
-        //-     //- input float label
-            
-        //-     .textfield.dropdown
-        //-         input(type="text")
-        //-         label(for="") Месяц
-        //-         span.dropdown__caret
-        //-         ul.dropdown__menu
-        //-             li(data-value="Январь") Январь
-        //-             li(data-value="Февраль") Февраль
-        //-             li(data-value="Март") Март
-        //-             li(data-value="Апрель") Апрель
-        //-     .textfield
-        //-         input(type="text")
-        //-         label(for="") Input float
-        //-         span.textfield__clean
-        //-         span.textfield__error Введите номер карты
-        //-         span.textfield__hint Введите 10ти значный номер карты
-        //-     .textfield
-        //-         input(type="text")
-        //-         label(for="") Input default
         script(src="js/script.js")
