@@ -13,7 +13,8 @@ let {
     inputCustomerIdp,
     ulSavedCards,
     inputOrderIdp,
-    inputSubtotalP
+    inputSubtotalP,
+    inputSaveCard
 } = require('./modules/vars');
 
 let showCard =  require('./modules/show-card-info');
@@ -29,6 +30,8 @@ inputCardNumber.addEventListener('input', function(event) {
 // Проверяем наличие "зарегистрированных" карт по определенному ID
 if (inputCustomerIdp.value) {
     loadCards(inputCustomerIdp.value, ulSavedCards);
+} else {
+    inputSaveCard.disabled = true;
 }
 if (inputOrderIdp.value) {
     document.getElementById('order_idp').textContent = inputOrderIdp.value;
