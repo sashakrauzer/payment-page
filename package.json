@@ -27,7 +27,7 @@
     "envify": "^4.1.0",
     "mkdirp": "^1.0.3",
     "ncp": "^2.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "npm-run-all": "^4.1.5",
     "pug": "^2.0.4",
     "pug-cli": "^1.0.0-alpha6",
